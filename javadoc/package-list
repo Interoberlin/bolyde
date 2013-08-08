@@ -1,0 +1,9 @@
+de.interoberlin.modelboat
+de.interoberlin.modelboat.controller.activities
+de.interoberlin.modelboat.model
+de.interoberlin.modelboat.model.accelerometer
+de.interoberlin.modelboat.model.http
+de.interoberlin.modelboat.model.log
+de.interoberlin.modelboat.model.settings
+de.interoberlin.modelboat.model.toast
+de.interoberlin.modelboat.view
