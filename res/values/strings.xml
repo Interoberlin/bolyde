@@ -1,10 +1,10 @@
 <resources>
 
-    <string name="app_name">ModelBoat</string>
+    <string name="app_name">Bolyde</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_debug">Debug</string>
     <string name="menu_support">Support</string>
-    <string name="title_activity_model_boat">ModelBoatActivity</string>
+    <string name="title_activity_model_boat">BolydeActivity</string>
     <string name="sensitivityX">Sensitivity X</string>
     <string name="sensitivityY">Sensitivity Y</string>
     <string name="url">URL</string>

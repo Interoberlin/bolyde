@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.interoberlin.modelboat"
+    package="de.interoberlin.bolyde"
     android:versionCode="1"
     android:versionName="0.8" >
 
@@ -27,22 +27,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.activities.ModelBoatActivity"
+            android:name="de.interoberlin.bolyde.view.activities.BolydeActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".controller.activities.LogActivity"
+            android:name="de.interoberlin.bolyde.view.activities.LogActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".controller.activities.SupportActivity"
+            android:name="de.interoberlin.bolyde.view.activities.SupportActivity.SupportActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".controller.activities.SettingsActivity"
+            android:name="de.interoberlin.bolyde.view.activities.SettingsActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>
