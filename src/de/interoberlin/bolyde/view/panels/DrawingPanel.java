@@ -119,7 +119,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		int circleCount = Settings.getCircleCount();
 		int pointRadius = Properties.getMinDimension() / 36;
-		float lineWidth = Properties.getCanvasWidth() / 90;
+		float lineWidth = Properties.getMinDimension() / 126;
 
 		int maxRadius = Properties.getMinDimension() / 2;
 		int minRadius = maxRadius / circleCount;

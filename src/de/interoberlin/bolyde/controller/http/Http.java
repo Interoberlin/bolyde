@@ -15,72 +15,72 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class Http
 {
-	public static void sendPost(final String url, final int x, final int y)
+    public static void sendPost(final String url, final int x, final int y)
+    {
+	if (url.equals(""))
 	{
-		if (url.equals(""))
-		{
-			return;
-		}
-
-		new Thread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				// Create a new HttpClient and Post Header
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://" + url);
-				System.out.println("URL " + url);
-
-				try
-				{
-					// Add your data
-					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-					nameValuePairs.add(new BasicNameValuePair("x", Integer.toString(x)));
-					nameValuePairs.add(new BasicNameValuePair("y", Integer.toString(y)));
-					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-					// Execute HTTP Post Request
-					httpclient.execute(httppost);
-				} catch (ClientProtocolException e)
-				{
-					// BolydeActivity.uiToast("ClientProtocolException");
-				} catch (IOException e)
-				{
-					// BolydeActivity.uiToast("IOException");
-				}
-			}
-		}).start();
+	    return;
 	}
 
-	public static void sendGet(final String url, final int x, final int y)
+	new Thread(new Runnable()
 	{
-		if (url.equals(""))
+	    @Override
+	    public void run()
+	    {
+		// Create a new HttpClient and Post Header
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://" + url);
+		System.out.println("URL " + url);
+
+		try
 		{
-			return;
+		    // Add your data
+		    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+		    nameValuePairs.add(new BasicNameValuePair("x", Integer.toString(x)));
+		    nameValuePairs.add(new BasicNameValuePair("y", Integer.toString(y)));
+		    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+		    // Execute HTTP Post Request
+		    httpclient.execute(httppost);
+		} catch (ClientProtocolException e)
+		{
+		    // BolydeActivity.uiToast("ClientProtocolException");
+		} catch (IOException e)
+		{
+		    // BolydeActivity.uiToast("IOException");
 		}
+	    }
+	}).start();
+    }
 
-		new Thread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				// Create a new HttpClient and Post Header
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpGet httpget = new HttpGet("http://" + url + "?x=" + x + "&y=" + y);
-
-				try
-				{
-					// Execute HTTP Get Request
-					httpclient.execute(httpget);
-				} catch (ClientProtocolException e)
-				{
-					// BolydeActivity.uiToast("ClientProtocolException");
-				} catch (IOException e)
-				{
-					// BolydeActivity.uiToast("IOException");
-				}
-			}
-		}).start();
+    public static void sendGet(final String url, final int x, final int y)
+    {
+	if (url.equals(""))
+	{
+	    return;
 	}
+
+	new Thread(new Runnable()
+	{
+	    @Override
+	    public void run()
+	    {
+		// Create a new HttpClient and Post Header
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpGet httpget = new HttpGet("http://" + url + "?x=" + x + "&y=" + y);
+
+		try
+		{
+		    // Execute HTTP Get Request
+		    httpclient.execute(httpget);
+		} catch (ClientProtocolException e)
+		{
+		    // BolydeActivity.uiToast("ClientProtocolException");
+		} catch (IOException e)
+		{
+		    // BolydeActivity.uiToast("IOException");
+		}
+	    }
+	}).start();
+    }
 }
