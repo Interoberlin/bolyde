@@ -4,31 +4,37 @@ import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import de.interoberlin.bolyde.controller.BolydeController;
 import de.interoberlin.bolyde.controller.Simulation;
-import de.interoberlin.bolyde.model.settings.Properties;
 import de.interoberlin.bolyde.model.settings.Settings;
 
 public class DrawingPanel extends SurfaceView implements Runnable
 {
-    Thread		   thread	= null;
-    SurfaceHolder	    surfaceHolder;
-    boolean		  running       = false;
+    private static BolydeController controller;
 
-    private static final int rgbPercentage = 35;
-    private static final int rgbMax	= 255;
+    Thread			  thread	= null;
+    SurfaceHolder		   surfaceHolder;
+    boolean			 running       = false;
 
-    private static boolean   blink	 = false;
+    private static final int	rgbPercentage = 35;
+    private static final int	rgbMax	= 255;
 
-    Random		   random;
+    private static boolean	  blink	 = false;
+
+    Random			  random;
 
     public DrawingPanel(Context context)
     {
 	super(context);
 	surfaceHolder = getHolder();
 	random = new Random();
+
+	controller = (BolydeController) context.getApplicationContext();
     }
 
     public void onChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3)
@@ -69,8 +75,8 @@ public class DrawingPanel extends SurfaceView implements Runnable
 	    {
 		Canvas canvas = surfaceHolder.lockCanvas();
 
-		Properties.setCanvasWidth(canvas.getWidth());
-		Properties.setCanvasHeight(canvas.getHeight());
+		controller.setCanvasWidth(canvas.getWidth());
+		controller.setCanvasHeight(canvas.getHeight());
 
 		float xValue = Simulation.getRawX();
 		float yValue = Simulation.getRawY();
@@ -83,10 +89,10 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		// Set background color
 		if (yValue < 1)
 		{
-		    red = Math.round(saturation / Settings.getMaxValue() * Math.abs(yValue));
+		    red = Math.round(saturation / controller.getMAX_VALUE() * Math.abs(yValue));
 		} else
 		{
-		    blue = Math.round(saturation / Settings.getMaxValue() * Math.abs(yValue));
+		    blue = Math.round(saturation / controller.getMAX_VALUE() * Math.abs(yValue));
 		}
 
 		Paint white = new Paint();
@@ -117,22 +123,15 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		    yCenter = h / 2;
 		}
 
-		int circleCount = Settings.getCircleCount();
-		int pointRadius = Properties.getMinDimension() / 36;
-		float lineWidth = Properties.getMinDimension() / 126;
+		int circleCount = controller.getCircleCount();
+		int pointRadius = controller.getMinDimension() / 36;
+		float lineWidth = controller.getMinDimension() / 126;
 
-		int maxRadius = Properties.getMinDimension() / 2;
+		int maxRadius = controller.getMinDimension() / 2;
 		int minRadius = maxRadius / circleCount;
 
 		// Clear
-		if (Settings.isLandscape())
-		{
-		    canvas.drawRect(0, 0, h, w, background);
-		} else
-		{
-		    canvas.drawRect(0, 0, w, h, background);
-
-		}
+		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
 		// Draw circles
 		for (int i = circleCount; i > 0; i--)
@@ -169,12 +168,12 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		if (Settings.isLandscape())
 		{
-		    xPoint = xCenter + (yCenter * xValue / -Math.abs(Settings.getMaxValue()));
-		    yPoint = yCenter + (yCenter * yValue / -Math.abs(Settings.getMaxValue()));
+		    xPoint = xCenter + (yCenter * xValue / -Math.abs(controller.getMAX_VALUE()));
+		    yPoint = yCenter + (yCenter * yValue / -Math.abs(controller.getMAX_VALUE()));
 		} else
 		{
-		    xPoint = xCenter + (xCenter * xValue / -Math.abs(Settings.getMaxValue()));
-		    yPoint = yCenter + (xCenter * yValue / -Math.abs(Settings.getMaxValue()));
+		    xPoint = xCenter + (xCenter * xValue / -Math.abs(controller.getMAX_VALUE()));
+		    yPoint = yCenter + (xCenter * yValue / -Math.abs(controller.getMAX_VALUE()));
 		}
 
 		float rPoint = pointRadius;

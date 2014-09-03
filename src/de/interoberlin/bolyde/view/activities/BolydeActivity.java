@@ -15,19 +15,20 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import de.interoberlin.bolyde.R;
+import de.interoberlin.bolyde.controller.BolydeController;
 import de.interoberlin.bolyde.controller.Simulation;
 import de.interoberlin.bolyde.controller.log.Log;
-import de.interoberlin.bolyde.model.settings.Properties;
 import de.interoberlin.bolyde.model.settings.Settings;
+import de.interoberlin.bolyde.view.DebugLine;
 import de.interoberlin.bolyde.view.panels.DrawingPanel;
 
 public class BolydeActivity extends Activity
 {
     private static Context       context;
     private static Activity      activity;
+    private static BolydeController controller;
 
     private static SensorManager mSensorManager;
     private WindowManager	mWindowManager;
@@ -36,26 +37,10 @@ public class BolydeActivity extends Activity
     private static DrawingPanel  srfc;
 
     private static LinearLayout  lnr;
-
-    private static LinearLayout  oneLnr;
-    private static TextView      oneTvFirst;
-    private static TextView      oneTvSecond;
-    private static TextView      oneTvThird;
-
-    private static LinearLayout  twoLnr;
-    private static TextView      twoTvFirst;
-    private static TextView      twoTvSecond;
-    private static TextView      twoTvThird;
-
-    private static LinearLayout  threeLnr;
-    private static TextView      threeTvFirst;
-    private static TextView      threeTvSecond;
-    private static TextView      threeTvThird;
-
-    private static LinearLayout  fourLnr;
-    private static TextView      fourTvFirst;
-    private static TextView      fourTvSecond;
-    private static TextView      fourTvThird;
+    private static DebugLine     dlOffset;
+    private static DebugLine     dlData;
+    private static DebugLine     dlRaw;
+    private static DebugLine     dlValues;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -66,6 +51,7 @@ public class BolydeActivity extends Activity
 	// Get activity and context
 	activity = this;
 	context = getApplicationContext();
+	controller = (BolydeController) getApplicationContext();
 
 	// Get an instance of the SensorManager
 	mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -101,13 +87,13 @@ public class BolydeActivity extends Activity
 		float x = event.getX();
 		float y = event.getY();
 
-		float deltaX = Math.abs(Properties.getCanvasWidth() / 2 - x);
-		float deltaY = Math.abs(Properties.getCanvasHeight() / 2 - y);
+		float deltaX = Math.abs(controller.getCanvasWidth() / 2 - x);
+		float deltaY = Math.abs(controller.getCanvasHeight() / 2 - y);
 
 		float distance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
 		// Check if clicked in inner circle
-		if (distance < Properties.getMinDimension() / 2 / Settings.getCircleCount())
+		if (distance < controller.getMinDimension() / 2 / controller.getCircleCount())
 		{
 		    setOffset(-Simulation.getDataX(), -Simulation.getDataY());
 		}
@@ -119,8 +105,8 @@ public class BolydeActivity extends Activity
 	    {
 		((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
 
-		Settings.setOffsetX(-x);
-		Settings.setOffsetY(-y);
+		controller.setOffsetX(-x);
+		controller.setOffsetY(-y);
 
 		uiToast("Set offset " + Simulation.getRawX() + "/" + Simulation.getRawY());
 		Log.info("Set offset " + x + " / " + y);
@@ -139,8 +125,6 @@ public class BolydeActivity extends Activity
     protected void onDestroy()
     {
 	super.onDestroy();
-
-	// Stop the simulartion
 	Simulation.getInstance(activity).stop();
     }
 
@@ -203,61 +187,19 @@ public class BolydeActivity extends Activity
 
 	if (lnr != null)
 	{
-	    lnr.removeAllViews();
+		lnr.removeAllViews();
 
-	    // Add text views
-	    oneLnr = new LinearLayout(activity);
-	    oneTvFirst = new TextView(activity);
-	    oneTvSecond = new TextView(activity);
-	    oneTvThird = new TextView(activity);
-	    oneTvFirst.setText("Data");
-	    oneTvSecond.setText(String.valueOf(Simulation.getDataX()));
-	    oneTvThird.setText(String.valueOf(Simulation.getDataY()));
-	    oneLnr.addView(oneTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    oneLnr.addView(oneTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    oneLnr.addView(oneTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+		// Add debug lines
+		dlOffset = new DebugLine(activity, "Offset", String.valueOf(controller.getOffsetX()), String.valueOf(controller.getOffsetY()));
+		dlData = new DebugLine(activity, "Data", String.valueOf(Simulation.getDataX()), String.valueOf(Simulation.getDataY()));
+		dlRaw = new DebugLine(activity, "Raw", String.valueOf(Simulation.getRawX()), String.valueOf(Simulation.getRawY()));
+		dlValues = new DebugLine(activity, "Values", String.valueOf(Simulation.getX()), String.valueOf(Simulation.getY()));
 
-	    // Add text views
-	    twoLnr = new LinearLayout(activity);
-	    twoTvFirst = new TextView(activity);
-	    twoTvSecond = new TextView(activity);
-	    twoTvThird = new TextView(activity);
-	    twoTvFirst.setText("Offset");
-	    twoTvSecond.setText(String.valueOf(Settings.getOffsetX()));
-	    twoTvThird.setText(String.valueOf(Settings.getOffsetY()));
-	    twoLnr.addView(twoTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    twoLnr.addView(twoTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    twoLnr.addView(twoTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-
-	    // Add text views
-	    threeLnr = new LinearLayout(activity);
-	    threeTvFirst = new TextView(activity);
-	    threeTvSecond = new TextView(activity);
-	    threeTvThird = new TextView(activity);
-	    threeTvFirst.setText("Raw");
-	    threeTvSecond.setText(String.valueOf(Simulation.getRawX()));
-	    threeTvThird.setText(String.valueOf(Simulation.getRawY()));
-	    threeLnr.addView(threeTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    threeLnr.addView(threeTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    threeLnr.addView(threeTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-
-	    // Add text views
-	    fourLnr = new LinearLayout(activity);
-	    fourTvFirst = new TextView(activity);
-	    fourTvSecond = new TextView(activity);
-	    fourTvThird = new TextView(activity);
-	    fourTvFirst.setText("Values");
-	    fourTvSecond.setText(String.valueOf(Simulation.getX()));
-	    fourTvThird.setText(String.valueOf(Simulation.getY()));
-	    fourLnr.addView(fourTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    fourLnr.addView(fourTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-	    fourLnr.addView(fourTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-
-	    lnr.setOrientation(1);
-	    lnr.addView(oneLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	    lnr.addView(twoLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	    lnr.addView(threeLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	    lnr.addView(fourLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		lnr.setOrientation(1);
+		lnr.addView(dlOffset, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		lnr.addView(dlData, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		lnr.addView(dlRaw, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		lnr.addView(dlValues, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
     }
 

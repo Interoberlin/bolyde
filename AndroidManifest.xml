@@ -8,9 +8,10 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 
     <application
+        android:name="de.interoberlin.bolyde.controller.BolydeController"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -37,7 +38,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="de.interoberlin.bolyde.view.activities.SupportActivity.SupportActivity"
+            android:name="de.interoberlin.bolyde.view.activities.SupportActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>

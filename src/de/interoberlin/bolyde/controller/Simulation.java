@@ -12,31 +12,28 @@ import de.interoberlin.bolyde.model.settings.Settings;
 
 public class Simulation implements Observer
 {
-    private static Simulation  instance;
+    private static Simulation       instance;
 
-    private static final float MAX_VALUE  = Settings.getMaxValue();
-    private static final float MIN_VALUE  = Settings.getMinValue();
-
-    float		      MAX_FACTOR = Settings.getMaxFactor();
-    float		      MIN_FACTOR = Settings.getMinFactor();
+    private static BolydeController controller;
 
     // Data values
-    private static float       dataX      = Float.MAX_VALUE;
-    private static float       dataY      = Float.MAX_VALUE;
+    private static float	    dataX = Float.MAX_VALUE;
+    private static float	    dataY = Float.MAX_VALUE;
 
     // Measured values + offset
-    private static float       rawX       = Integer.MAX_VALUE;
-    private static float       rawY       = Integer.MAX_VALUE;
+    private static float	    rawX  = Integer.MAX_VALUE;
+    private static float	    rawY  = Integer.MAX_VALUE;
 
     // Measured values + offset + rounded
-    private static int	 x	  = Integer.MAX_VALUE;
-    private static int	 y	  = Integer.MAX_VALUE;
+    private static int	      x     = Integer.MAX_VALUE;
+    private static int	      y     = Integer.MAX_VALUE;
 
-    private Activity	   activity;
+    private Activity		activity;
 
     private Simulation(Activity activity)
     {
 	this.activity = activity;
+	controller = (BolydeController) activity.getApplicationContext();
     }
 
     public static Simulation getInstance(Activity activity)
@@ -61,8 +58,9 @@ public class Simulation implements Observer
 	float sensibilityY = Settings.getSensitivityY();
 
 	// Retrieve values from observed AccelerationEvent
-	rawX = normalize(dataX - Settings.getOffsetX(), sensibilityX);
-	rawY = normalize(dataY - Settings.getOffsetY(), sensibilityY);
+	System.out.println("X " + sensibilityX + " Y " + sensibilityY);
+	rawX = normalize(dataX - controller.getOffsetX(), sensibilityX);
+	rawY = normalize(dataY - controller.getOffsetY(), sensibilityY);
 
 	x = Math.round(rawX);
 	y = Math.round(rawY);
@@ -70,7 +68,6 @@ public class Simulation implements Observer
 
     public void start()
     {
-	// BolydeActivity.uiToast("Simulation started");
 	Log.info("Simulation started");
 	Accelerometer.getInstance(activity).start();
 	BroadcastThread.getInstance().start();
@@ -78,22 +75,21 @@ public class Simulation implements Observer
 
     public void stop()
     {
-	// BolydeActivity.uiToast("Simulation stopped");
 	Log.info("Simulation stopped");
 	Accelerometer.getInstance(activity).stop();
-	// BroadcastThread.getInstance().stop();
+	BroadcastThread.getInstance().stop();
     }
 
     private float normalize(float f, float sensibility)
     {
-	float FACTOR = (((MAX_FACTOR - MIN_FACTOR) / 100) * sensibility) + MIN_FACTOR;
+	float FACTOR = (((controller.getMAX_FACTOR() - controller.getMIN_FACTOR()) / 100) * sensibility) + controller.getMIN_FACTOR();
 
-	if (f * FACTOR > MAX_VALUE)
+	if (f * FACTOR > controller.getMAX_VALUE())
 	{
-	    return MAX_VALUE;
-	} else if (f * FACTOR < MIN_VALUE)
+	    return controller.getMAX_VALUE();
+	} else if (f * FACTOR < controller.getMIN_VALUE())
 	{
-	    return MIN_VALUE;
+	    return controller.getMIN_VALUE();
 	} else
 	{
 	    return f * FACTOR;
