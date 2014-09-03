@@ -42,14 +42,12 @@ public class Accelerometer extends Observable implements SensorEventListener
 
     public void start()
     {
-	BolydeActivity.uiToast("Accelerometer started");
 	Log.info("Accelerometer started");
 	((BolydeActivity) activity).getSensorManager().registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     public void stop()
     {
-	BolydeActivity.uiToast("Accelerometer stopped");
 	Log.info("Accelerometer stopped");
 	((BolydeActivity) activity).getSensorManager().unregisterListener(this);
     }

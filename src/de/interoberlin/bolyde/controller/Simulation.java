@@ -58,7 +58,6 @@ public class Simulation implements Observer
 	float sensibilityY = Settings.getSensitivityY();
 
 	// Retrieve values from observed AccelerationEvent
-	System.out.println("X " + sensibilityX + " Y " + sensibilityY);
 	rawX = normalize(dataX - controller.getOffsetX(), sensibilityX);
 	rawY = normalize(dataY - controller.getOffsetY(), sensibilityY);
 

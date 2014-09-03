@@ -30,7 +30,6 @@ public class Http
 		// Create a new HttpClient and Post Header
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://" + url);
-		System.out.println("URL " + url);
 
 		try
 		{
