@@ -154,14 +154,12 @@ public class SplashActivity extends Activity
 
 		long millisBefore = 0;
 		long millisAfter = 0;
-		long millisFrame = (long) (1000 / 10);
+		long millisFrame = (long) (1000 / panel.getFpsDesired());
 
-		boolean running = false;
-		
+		boolean running = true;
+
 		while (running)
 		{
-		    // System.out.println("UPDATE");
-
 		    millisBefore = System.currentTimeMillis();
 
 		    synchronized (svg)
@@ -172,29 +170,34 @@ public class SplashActivity extends Activity
 			    {
 				long seconds = System.currentTimeMillis() / 1000;
 
+				int Z_INDEX_WEIGHT = 10;
+				int AMPLITUTDE = 5;
+				
 				float x = 0;
-				float y = ((seconds + e.getzIndex()) % svg.getMaxZindex()) * 5;
+//				float y = ((seconds + e.getzIndex()) % svg.getMaxZindex()) * 5;
+				float y = (float) Math.sin((seconds  + (e.getzIndex() * Z_INDEX_WEIGHT)) % 360) * AMPLITUTDE;
 
 				e.setAnimationTransform(new SVGTransformTranslate(x, y));
 			    }
 			}
 
 			millisAfter = System.currentTimeMillis();
-
-			// P A U S E
-
-			if (millisAfter - millisBefore < millisFrame)
-			{
-			    try
-			    {
-				Thread.sleep(millisFrame - (millisAfter - millisBefore));
-			    } catch (InterruptedException e)
-			    {
-				e.printStackTrace();
-			    }
-			}
-			millisAfter = System.currentTimeMillis();
 		    }
+
+		    // P A U S E
+
+		    if (millisAfter - millisBefore < millisFrame)
+		    {
+			try
+			{
+			    Thread.sleep(millisFrame - (millisAfter - millisBefore));
+			} catch (InterruptedException e)
+			{
+			    e.printStackTrace();
+			}
+		    }
+		    millisAfter = System.currentTimeMillis();
+
 		}
 	    }
 	});
