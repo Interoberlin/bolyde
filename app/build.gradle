@@ -19,6 +19,9 @@ android {
     compileSdkVersion 19
     buildToolsVersion "19.1.0"
 
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         applicationId "de.interoberlin.bolyde"
         minSdkVersion 15
@@ -31,6 +34,10 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable false
+            runProguard false
+        }
     }
 }
 
@@ -39,4 +46,15 @@ dependencies {
     compile 'de.interoberlin:sauvignon:0.1.0@aar'
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     // compile 'com.android.support:support-v4:19.+'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+            pom.groupId = 'de.interoberlin'
+            pom.artifactId = 'bolyde'
+            pom.version = '0.1.0'
+        }
+    }
 }
