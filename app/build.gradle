@@ -127,14 +127,14 @@ task writeMetadata {
         manifestText = manifestFile.getText()
         def matcherCurrentVersion = patternCurrentVersion.matcher(manifestText)
         matcherCurrentVersion.find()
-        manifestContent = matcherCurrentVersion.replaceAll('Current Version: ' + versionMajor + "." + versionMinor + "." + versionPatch)
+        manifestContent = matcherCurrentVersion.replaceAll('Current Version: ' + versionMajor + "." + versionMinor + "." + System.getenv("BUILD_NUMBER")+ "." + System.getenv("GIT_COMMIT"))
         manifestFile.write(manifestContent)
 
         def patternCurrentVersionCode = Pattern.compile("Current Version Code:.*")
         manifestText = manifestFile.getText()
         def matcherCurrentVersionCode = patternCurrentVersionCode.matcher(manifestText)
         matcherCurrentVersionCode.find()
-        manifestContent = matcherCurrentVersionCode.replaceAll('Current Version Code: ' + System.getenv("BUILD_NUMBER") as Integer ?: 9999)
+        manifestContent = matcherCurrentVersionCode.replaceAll('Current Version Code: ' + System.getenv("BUILD_NUMBER"))
         manifestFile.write(manifestContent)
     }
 }
