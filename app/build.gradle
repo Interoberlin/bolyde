@@ -119,8 +119,22 @@ task writeMetadata {
         def patternDescription = Pattern.compile("Description:.*")
         manifestText = manifestFile.getText()
         def matcherDescription = patternDescription.matcher(manifestText)
-        matcherLicense.find()
-        manifestContent = matcherDescription.replaceAll('Description:\n* ' + '\'\'\'' + versionMajor + '.' + versionMinor + '.' + versionPatch + '\'\'\' ' + description)
+        matcherDescription.find()
+        manifestContent = matcherDescription.replaceAll('Description:\n* \'\'\'' + versionMajor + '.' + versionMinor + '.' + System.getenv("BUILD_NUMBER") + '\'\'\' ' + description)
+        manifestFile.write(manifestContent)
+
+        def patternCurrentVersion = Pattern.compile("Current Version:.*")
+        manifestText = manifestFile.getText()
+        def matcherCurrentVersion = patternCurrentVersion.matcher(manifestText)
+        matcherCurrentVersion.find()
+        manifestContent = matcherCurrentVersion.replaceAll('Current Version: ' + versionMajor + "." + versionMinor + "." + versionPatch)
+        manifestFile.write(manifestContent)
+
+        def patternCurrentVersionCode = Pattern.compile("Current Version Code:.*")
+        manifestText = manifestFile.getText()
+        def matcherCurrentVersionCode = patternCurrentVersionCode.matcher(manifestText)
+        matcherCurrentVersionCode.find()
+        manifestContent = matcherCurrentVersionCode.replaceAll('Current Version Code: ' + System.getenv("BUILD_NUMBER") as Integer ?: 9999)
         manifestFile.write(manifestContent)
     }
 }
