@@ -16,6 +16,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import de.interoberlin.bolyde.R;
 import de.interoberlin.bolyde.controller.BolydeController;
 import de.interoberlin.bolyde.controller.Simulation;
@@ -23,6 +24,8 @@ import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.model.settings.Settings;
 import de.interoberlin.bolyde.view.DebugLine;
 import de.interoberlin.bolyde.view.panels.DrawingPanel;
+import de.interoberlin.mate.lib.view.LogActivity;
+import de.interoberlin.mate.lib.view.SupportActivity;
 
 public class BolydeActivity extends Activity
 {
@@ -195,7 +198,7 @@ public class BolydeActivity extends Activity
 		dlRaw = new DebugLine(activity, "Raw", String.valueOf(Simulation.getRawX()), String.valueOf(Simulation.getRawY()));
 		dlValues = new DebugLine(activity, "Values", String.valueOf(Simulation.getX()), String.valueOf(Simulation.getY()));
 
-		lnr.setOrientation(1);
+		lnr.setOrientation(LinearLayout.VERTICAL);
 		lnr.addView(dlOffset, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		lnr.addView(dlData, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		lnr.addView(dlRaw, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));

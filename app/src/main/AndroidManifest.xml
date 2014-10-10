@@ -32,12 +32,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="de.interoberlin.bolyde.view.activities.LogActivity"
+            android:name="de.interoberlin.mate.lib.view.LogActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="de.interoberlin.bolyde.view.activities.SupportActivity"
+            android:name="de.interoberlin.mate.lib.view.SupportActivity"
             android:label="@string/title_activity_model_boat"
             android:screenOrientation="portrait" >
         </activity>
