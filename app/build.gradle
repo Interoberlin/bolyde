@@ -26,7 +26,10 @@ android {
         minSdkVersion 15
         targetSdkVersion 19
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 9999
-        versionName versionMajor + "." + versionMinor + "." + versionPatch
+        if (System.getenv("BUILD_NUMBER") != null)
+            versionName versionMajor + "." + versionMinor + "." + System.getenv("BUILD_NUMBER")
+        else
+            versionName versionMajor + "." + versionMinor + "." + versionPatch
     }
     signingConfigs {
         release {
