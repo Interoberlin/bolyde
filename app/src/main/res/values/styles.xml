@@ -1,8 +1,8 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo" />
+    <style name="AppTheme" parent="android:Theme.Holo.Light" />
 
-    <style name="SplashTheme.FullScreen" parent="android:Theme">
+    <style name="SplashTheme.FullScreen" parent="android:Theme.Holo.Light">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>

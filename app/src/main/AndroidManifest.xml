@@ -14,7 +14,7 @@
         android:name="de.interoberlin.bolyde.controller.BolydeController"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Holo.Light" >
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
@@ -37,9 +37,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="de.interoberlin.mate.lib.view.SupportActivity"
+            android:name="de.interoberlin.mate.lib.view.AboutActivity"
             android:label="@string/title_activity_model_boat"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light">
         </activity>
         <activity
             android:name="de.interoberlin.bolyde.view.activities.SettingsActivity"

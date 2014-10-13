@@ -24,8 +24,8 @@ import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.model.settings.Settings;
 import de.interoberlin.bolyde.view.DebugLine;
 import de.interoberlin.bolyde.view.panels.DrawingPanel;
+import de.interoberlin.mate.lib.view.AboutActivity;
 import de.interoberlin.mate.lib.view.LogActivity;
-import de.interoberlin.mate.lib.view.SupportActivity;
 
 public class BolydeActivity extends Activity
 {
@@ -170,7 +170,7 @@ public class BolydeActivity extends Activity
 	    }
 	    case R.id.menu_support:
 	    {
-		Intent i = new Intent(BolydeActivity.this, SupportActivity.class);
+		Intent i = new Intent(BolydeActivity.this, AboutActivity.class);
 		startActivity(i);
 		break;
 	    }

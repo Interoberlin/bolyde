@@ -1,7 +1,5 @@
 package de.interoberlin.bolyde.view.panels;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +7,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.Random;
+
 import de.interoberlin.bolyde.controller.BolydeController;
 import de.interoberlin.bolyde.controller.Simulation;
 import de.interoberlin.bolyde.model.settings.Settings;
@@ -81,27 +82,30 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		float xValue = Simulation.getRawX();
 		float yValue = Simulation.getRawY();
 
-		int red = 0;
-		int blue = 0;
+		int red = 255;
+        int green = 255;
+        int blue = 255;
 
 		int saturation = rgbMax / 100 * rgbPercentage;
 
 		// Set background color
 		if (yValue < 1)
 		{
-		    red = Math.round(saturation / controller.getMAX_VALUE() * Math.abs(yValue));
+            blue = green=  255 - Math.round(saturation / controller.getMAX_VALUE() * Math.abs(yValue));
 		} else
 		{
-		    blue = Math.round(saturation / controller.getMAX_VALUE() * Math.abs(yValue));
+		    red = green = 255 -Math.round(saturation / controller.getMAX_VALUE() * Math.abs(yValue));
 		}
 
-		Paint white = new Paint();
+        Paint white = new Paint();
+        Paint black = new Paint();
 		Paint background = new Paint();
 		Paint orange = new Paint();
 
-		white.setARGB(255, 255, 255, 255);
+        white.setARGB(255, 255, 255, 255);
+        black.setARGB(255, 0, 0, 0);
 		orange.setARGB(255, 238, 118, 0);
-		background.setARGB(255, red, 0, blue);
+		background.setARGB(255, red, green, blue);
 
 		int w;
 		int h;
@@ -131,7 +135,8 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		int minRadius = maxRadius / circleCount;
 
 		// Clear
-		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+		canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
+        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), white);
 
 		// Draw circles
 		for (int i = circleCount; i > 0; i--)
@@ -143,23 +148,23 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		    }
 
 		    float radius = (1.0F / circleCount) * i * maxRadius;
-		    canvas.drawCircle(xCenter, yCenter, radius, white);
+		    canvas.drawCircle(xCenter, yCenter, radius, black);
 		    canvas.drawCircle(xCenter, yCenter, radius - lineWidth, background);
 		}
 
 		// Draw lines (left, right, top, bottom)
 		if (Settings.isLandscape())
 		{
-		    canvas.drawLine(0 + maxRadius, yCenter, xCenter - minRadius, yCenter, white);
-		    canvas.drawLine(h - maxRadius, yCenter, xCenter + minRadius, yCenter, white);
-		    canvas.drawLine(xCenter, yCenter - maxRadius, xCenter, yCenter - minRadius, white);
-		    canvas.drawLine(xCenter, yCenter + maxRadius, xCenter, yCenter + minRadius, white);
+		    canvas.drawLine(0 + maxRadius, yCenter, xCenter - minRadius, yCenter, black);
+		    canvas.drawLine(h - maxRadius, yCenter, xCenter + minRadius, yCenter, black);
+		    canvas.drawLine(xCenter, yCenter - maxRadius, xCenter, yCenter - minRadius, black);
+		    canvas.drawLine(xCenter, yCenter + maxRadius, xCenter, yCenter + minRadius, black);
 		} else
 		{
-		    canvas.drawLine(0, yCenter, xCenter - minRadius, yCenter, white);
-		    canvas.drawLine(w, yCenter, xCenter + minRadius, yCenter, white);
-		    canvas.drawLine(xCenter, yCenter - maxRadius, xCenter, yCenter - minRadius, white);
-		    canvas.drawLine(xCenter, yCenter + maxRadius, xCenter, yCenter + minRadius, white);
+		    canvas.drawLine(0, yCenter, xCenter - minRadius, yCenter, black);
+		    canvas.drawLine(w, yCenter, xCenter + minRadius, yCenter, black);
+		    canvas.drawLine(xCenter, yCenter - maxRadius, xCenter, yCenter - minRadius, black);
+		    canvas.drawLine(xCenter, yCenter + maxRadius, xCenter, yCenter + minRadius, black);
 		}
 
 		// Draw Point
