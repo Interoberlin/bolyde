@@ -1,16 +1,17 @@
 package de.interoberlin.bolyde.controller.accelerometer;
 
-import java.util.Observable;
-
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.Surface;
+
+import java.util.Observable;
+
 import de.interoberlin.bolyde.controller.Simulation;
-import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.view.activities.BolydeActivity;
+import de.interoberlin.mate.lib.model.Log;
 
 public class Accelerometer extends Observable implements SensorEventListener
 {

@@ -13,9 +13,10 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
+
 import de.interoberlin.bolyde.R;
-import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.model.settings.Settings;
+import de.interoberlin.mate.lib.model.Log;
 
 public class SettingsActivity extends Activity
 {

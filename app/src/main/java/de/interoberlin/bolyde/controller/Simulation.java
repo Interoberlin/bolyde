@@ -1,14 +1,15 @@
 package de.interoberlin.bolyde.controller;
 
+import android.app.Activity;
+
 import java.util.Observable;
 import java.util.Observer;
 
-import android.app.Activity;
 import de.interoberlin.bolyde.controller.accelerometer.AccelerationEvent;
 import de.interoberlin.bolyde.controller.accelerometer.Accelerometer;
 import de.interoberlin.bolyde.controller.http.BroadcastThread;
-import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.model.settings.Settings;
+import de.interoberlin.mate.lib.model.Log;
 
 public class Simulation implements Observer
 {

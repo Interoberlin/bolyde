@@ -1,10 +1,10 @@
 package de.interoberlin.bolyde.controller.http;
 
 import de.interoberlin.bolyde.controller.Simulation;
-import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.model.settings.Settings;
 import de.interoberlin.bolyde.view.activities.BolydeActivity;
 import de.interoberlin.bolyde.view.panels.DrawingPanel;
+import de.interoberlin.mate.lib.model.Log;
 
 public class BroadcastThread
 {

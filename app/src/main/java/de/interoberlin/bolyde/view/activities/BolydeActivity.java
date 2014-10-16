@@ -20,10 +20,10 @@ import android.widget.Toast;
 import de.interoberlin.bolyde.R;
 import de.interoberlin.bolyde.controller.BolydeController;
 import de.interoberlin.bolyde.controller.Simulation;
-import de.interoberlin.bolyde.controller.log.Log;
 import de.interoberlin.bolyde.model.settings.Settings;
 import de.interoberlin.bolyde.view.DebugLine;
 import de.interoberlin.bolyde.view.panels.DrawingPanel;
+import de.interoberlin.mate.lib.model.Log;
 import de.interoberlin.mate.lib.view.AboutActivity;
 import de.interoberlin.mate.lib.view.LogActivity;
 
@@ -77,8 +77,10 @@ public class BolydeActivity extends Activity
 
     public void onResume()
     {
-	super.onResume();
-	srfc.onResume();
+        super.onResume();
+        srfc.onResume();
+
+        Log.fatal("BolydeActivity#onResume()");
 
 	draw();
 
@@ -120,66 +122,65 @@ public class BolydeActivity extends Activity
     @Override
     protected void onPause()
     {
-	super.onPause();
-	srfc.onPause();
+        super.onPause();
+        srfc.onPause();
     }
 
     @Override
     protected void onDestroy()
     {
-	super.onDestroy();
-	Simulation.getInstance(activity).stop();
+        super.onDestroy();
+        Simulation.getInstance(activity).stop();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-	getMenuInflater().inflate(R.menu.activity_model_boat, menu);
-	return true;
+        getMenuInflater().inflate(R.menu.activity_model_boat, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-	switch (item.getItemId())
-	{
-	    case R.id.menu_debug:
-	    {
-		if (Settings.isDebug())
-		{
-		    uiToast("Debug disabled");
-		    Settings.setDebug(false);
-		} else
-		{
-		    Settings.setDebug(true);
-		    uiToast("Debug enabled");
-		}
-		break;
+        switch (item.getItemId())
+        {
+            case R.id.menu_debug:
+            {
+                if (Settings.isDebug())
+                {
+                    uiToast("Debug disabled");
+                    Settings.setDebug(false);
+                } else
+                {
+                    Settings.setDebug(true);
+                    uiToast("Debug enabled");
+                }
+                break;
+            }
+            case R.id.menu_log:
+            {
+                Intent i = new Intent(BolydeActivity.this, LogActivity.class);
+                startActivity(i);
+                break;
+            }
+            case R.id.menu_settings:
+            {
+                Intent i = new Intent(BolydeActivity.this, SettingsActivity.class);
+                startActivity(i);
+                break;
+            }
+            case R.id.menu_support:
+            {
+                Intent i = new Intent(BolydeActivity.this, AboutActivity.class);
+                startActivity(i);
+                break;
+            }
+            default:
+            {
+                return super.onOptionsItemSelected(item);
+            }
 	    }
-	    case R.id.menu_log:
-	    {
-		Intent i = new Intent(BolydeActivity.this, LogActivity.class);
-		startActivity(i);
-		break;
-	    }
-	    case R.id.menu_settings:
-	    {
-		Intent i = new Intent(BolydeActivity.this, SettingsActivity.class);
-		startActivity(i);
-		break;
-	    }
-	    case R.id.menu_support:
-	    {
-		Intent i = new Intent(BolydeActivity.this, AboutActivity.class);
-		startActivity(i);
-		break;
-	    }
-	    default:
-	    {
-		return super.onOptionsItemSelected(item);
-
-	    }
-	}
 
 	return true;
     }
