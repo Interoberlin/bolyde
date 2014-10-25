@@ -26,10 +26,9 @@ import de.interoberlin.sauvignon.lib.model.util.SVGPaint;
 import de.interoberlin.sauvignon.lib.view.SVGPanel;
 
 
-public class SplashActivity extends Activity
-{
-    private static Context	  context;
-    private static Activity	 activity;
+public class SplashActivity extends Activity {
+    private static Context context;
+    private static Activity activity;
     private static BolydeController controller;
 
     // private static SensorManager sensorManager;
@@ -37,78 +36,72 @@ public class SplashActivity extends Activity
     // private static Display display;
 
     private static SVG svg;
-    private static SVGPanel	 panel;
-    private static ImageView	ivLogo;
+    private static SVGPanel panel;
+    private static ImageView ivLogo;
 
-    private static long	     millisStart;
+    private static long millisStart;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_splash);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
 
-	// Get activity and context
-	activity = this;
-	context = getApplicationContext();
-	controller = (BolydeController) getApplicationContext();
+        // Get activity and context
+        activity = this;
+        context = getApplicationContext();
+        controller = (BolydeController) getApplicationContext();
 
-	// Get instances of managers
-	// sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-	// windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-	// display = windowManager.getDefaultDisplay();
+        // Get instances of managers
+        // sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        // windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        // display = windowManager.getDefaultDisplay();
 
-	svg = SvgLoader.getSVGFromAsset(context, "bolyde.svg");
+        svg = SvgLoader.getSVGFromAsset(context, "bolyde.svg");
 
-	panel = new SVGPanel(activity);
-	panel.setSVG(svg);
-	panel.setBackgroundColor(new SVGPaint(255, 255, 255, 255));
+        panel = new SVGPanel(activity);
+        panel.setSVG(svg);
+        panel.setBackgroundColor(new SVGPaint(255, 255, 255, 255));
 
-	ivLogo = new ImageView(activity);
-	ivLogo.setImageDrawable(loadFromAssets("lymbo.png"));
+        ivLogo = new ImageView(activity);
+        ivLogo.setImageDrawable(loadFromAssets("lymbo.png"));
 
-	// Add surface view
-	activity.addContentView(panel, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-	activity.addContentView(ivLogo, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        // Add surface view
+        activity.addContentView(panel, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        activity.addContentView(ivLogo, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-	panel.setOnTouchListener(new OnTouchListener()
-	{
-	    @Override
-	    public boolean onTouch(View v, MotionEvent event)
-	    {
-		startActivity(new Intent(SplashActivity.this, BolydeActivity.class));
+        panel.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                startActivity(new Intent(SplashActivity.this, BolydeActivity.class));
 
-		return true;
-	    }
-	});
+                return true;
+            }
+        });
 
-	// Initialize
-	uiInit();
+        // Initialize
+        uiInit();
     }
 
-    public void onResume()
-    {
-	super.onResume();
-	panel.resume();
-	uiUpdate();
-	draw();
+    public void onResume() {
+        super.onResume();
+        panel.resume();
+        uiUpdate();
+        draw();
 
-	// Simulation.getInstance(activity).start();
+        // Simulation.getInstance(activity).start();
     }
 
     @Override
-    protected void onPause()
-    {
-	super.onPause();
-	panel.pause();
+    protected void onPause() {
+        super.onPause();
+        panel.pause();
 
-	// Simulation.getInstance(activity).stop();
+        // Simulation.getInstance(activity).stop();
     }
 
     @Override
-    protected void onDestroy()
-    {
-	super.onDestroy();
+    protected void onDestroy() {
+        super.onDestroy();
 
     }
 
@@ -122,112 +115,90 @@ public class SplashActivity extends Activity
     // return sensorManager;
     // }
 
-    public static void draw()
-    {
+    public static void draw() {
     }
 
-    private Drawable loadFromAssets(String image)
-    {
-	try
-	{
-	    InputStream is = getAssets().open("bolyde.png");
-	    return Drawable.createFromStream(is, null);
-	} catch (IOException ex)
-	{
-	    return null;
-	}
+    private Drawable loadFromAssets(String image) {
+        try {
+            InputStream is = getAssets().open("bolyde.png");
+            return Drawable.createFromStream(is, null);
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
-    public static void uiInit()
-    {
-	synchronized (svg)
-	{
-	}
+    public static void uiInit() {
+        synchronized (svg) {
+        }
     }
 
-    public static void uiUpdate()
-    {
-	Thread t = new Thread(new Runnable()
-	{
-	    @Override
-	    public void run()
-	    {
-		millisStart = System.currentTimeMillis();
+    public static void uiUpdate() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                millisStart = System.currentTimeMillis();
 
-		long millisBefore = 0;
-		long millisAfter = 0;
-		long millisFrame = (long) (1000 / panel.getFpsDesired());
+                long millisBefore = 0;
+                long millisAfter = 0;
+                long millisFrame = (long) (1000 / panel.getFpsDesired());
 
-		boolean running = true;
+                boolean running = true;
 
-		while (running)
-		{
-		    millisBefore = System.currentTimeMillis();
+                while (running) {
+                    millisBefore = System.currentTimeMillis();
 
-		    synchronized (svg)
-		    {
-			for (AGeometric e : svg.getAllSubElements())
-			{
-			    if (e instanceof SVGPath)
-			    {
-				long seconds = System.currentTimeMillis() / 1000;
+                    synchronized (svg) {
+                        for (AGeometric e : svg.getAllSubElements()) {
+                            if (e instanceof SVGPath) {
+                                long seconds = System.currentTimeMillis() / 1000;
 
-				int Z_INDEX_WEIGHT = 10;
-				int AMPLITUTDE = 5;
-				
-				float x = 0;
+                                int Z_INDEX_WEIGHT = 10;
+                                int AMPLITUTDE = 5;
+
+                                float x = 0;
 //				float y = ((seconds + e.getzIndex()) % svg.getMaxZindex()) * 5;
-				float y = (float) Math.sin((seconds  + (e.getzIndex() * Z_INDEX_WEIGHT)) % 360) * AMPLITUTDE;
+                                float y = (float) Math.sin((seconds + (e.getzIndex() * Z_INDEX_WEIGHT)) % 360) * AMPLITUTDE;
 
-				e.setAnimationTransform(new SVGTransformTranslate(x, y));
-			    }
-			}
+                                e.setAnimationTransform(new SVGTransformTranslate(x, y));
+                            }
+                        }
 
-			millisAfter = System.currentTimeMillis();
-		    }
+                        millisAfter = System.currentTimeMillis();
+                    }
 
-		    // P A U S E
+                    // P A U S E
 
-		    if (millisAfter - millisBefore < millisFrame)
-		    {
-			try
-			{
-			    Thread.sleep(millisFrame - (millisAfter - millisBefore));
-			} catch (InterruptedException e)
-			{
-			    e.printStackTrace();
-			}
-		    }
-		    millisAfter = System.currentTimeMillis();
+                    if (millisAfter - millisBefore < millisFrame) {
+                        try {
+                            Thread.sleep(millisFrame - (millisAfter - millisBefore));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    millisAfter = System.currentTimeMillis();
 
-		}
-	    }
-	});
+                }
+            }
+        });
 
-	t.start();
+        t.start();
     }
 
-    public static void uiDraw()
-    {
-	activity.runOnUiThread(new Runnable()
-	{
-	    @Override
-	    public void run()
-	    {
-		draw();
-	    }
-	});
+    public static void uiDraw() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                draw();
+            }
+        });
     }
 
-    public static void uiToast(final String message)
-    {
-	activity.runOnUiThread(new Runnable()
-	{
-	    @Override
-	    public void run()
-	    {
-		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-	    }
-	});
+    public static void uiToast(final String message) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

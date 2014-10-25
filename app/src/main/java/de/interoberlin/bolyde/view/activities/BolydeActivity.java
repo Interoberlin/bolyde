@@ -27,220 +27,191 @@ import de.interoberlin.mate.lib.model.Log;
 import de.interoberlin.mate.lib.view.AboutActivity;
 import de.interoberlin.mate.lib.view.LogActivity;
 
-public class BolydeActivity extends Activity
-{
-    private static Context       context;
-    private static Activity      activity;
+public class BolydeActivity extends Activity {
+    private static Context context;
+    private static Activity activity;
     private static BolydeController controller;
 
     private static SensorManager mSensorManager;
-    private WindowManager	mWindowManager;
-    private static Display       mDisplay;
+    private WindowManager mWindowManager;
+    private static Display mDisplay;
 
-    private static DrawingPanel  srfc;
+    private static DrawingPanel srfc;
 
-    private static LinearLayout  lnr;
-    private static DebugLine     dlOffset;
-    private static DebugLine     dlData;
-    private static DebugLine     dlRaw;
-    private static DebugLine     dlValues;
+    private static LinearLayout lnr;
+    private static DebugLine dlOffset;
+    private static DebugLine dlData;
+    private static DebugLine dlRaw;
+    private static DebugLine dlValues;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_model_boat);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_model_boat);
 
-	// Get activity and context
-	activity = this;
-	context = getApplicationContext();
-	controller = (BolydeController) getApplicationContext();
+        // Get activity and context
+        activity = this;
+        context = getApplicationContext();
+        controller = (BolydeController) getApplicationContext();
 
-	// Get an instance of the SensorManager
-	mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        // Get an instance of the SensorManager
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-	// Get an instance of the WindowManager
-	mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-	mDisplay = mWindowManager.getDefaultDisplay();
+        // Get an instance of the WindowManager
+        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        mDisplay = mWindowManager.getDefaultDisplay();
 
-	// Add surface view
-	srfc = new DrawingPanel(activity);
-	activity.addContentView(srfc, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        // Add surface view
+        srfc = new DrawingPanel(activity);
+        activity.addContentView(srfc, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-	// Add linear layout
-	lnr = new LinearLayout(activity);
-	activity.addContentView(lnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        // Add linear layout
+        lnr = new LinearLayout(activity);
+        activity.addContentView(lnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
-	// Start the simulation
-	Simulation.getInstance(activity).start();
+        // Start the simulation
+        Simulation.getInstance(activity).start();
     }
 
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         srfc.onResume();
 
-        Log.fatal("BolydeActivity#onResume()");
+        draw();
 
-	draw();
+        srfc.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                float x = event.getX();
+                float y = event.getY();
 
-	srfc.setOnTouchListener(new OnTouchListener()
-	{
-	    @Override
-	    public boolean onTouch(View v, MotionEvent event)
-	    {
-		float x = event.getX();
-		float y = event.getY();
+                float deltaX = Math.abs(controller.getCanvasWidth() / 2 - x);
+                float deltaY = Math.abs(controller.getCanvasHeight() / 2 - y);
 
-		float deltaX = Math.abs(controller.getCanvasWidth() / 2 - x);
-		float deltaY = Math.abs(controller.getCanvasHeight() / 2 - y);
+                float distance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
-		float distance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+                // Check if clicked in inner circle
+                if (distance < controller.getMinDimension() / 2 / controller.getCircleCount()) {
+                    setOffset(-Simulation.getDataX(), -Simulation.getDataY());
+                }
 
-		// Check if clicked in inner circle
-		if (distance < controller.getMinDimension() / 2 / controller.getCircleCount())
-		{
-		    setOffset(-Simulation.getDataX(), -Simulation.getDataY());
-		}
+                return true;
+            }
 
-		return true;
-	    }
+            private void setOffset(float x, float y) {
+                ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
 
-	    private void setOffset(float x, float y)
-	    {
-		((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
+                controller.setOffsetX(-x);
+                controller.setOffsetY(-y);
 
-		controller.setOffsetX(-x);
-		controller.setOffsetY(-y);
-
-		uiToast("Set offset " + Simulation.getRawX() + "/" + Simulation.getRawY());
-		Log.info("Set offset " + x + " / " + y);
-	    }
-	});
+                uiToast("Set offset " + Simulation.getRawX() + "/" + Simulation.getRawY());
+                Log.info("Set offset " + x + " / " + y);
+            }
+        });
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         srfc.onPause();
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         Simulation.getInstance(activity).stop();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_model_boat, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.menu_debug:
-            {
-                if (Settings.isDebug())
-                {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_debug: {
+                if (Settings.isDebug()) {
                     uiToast("Debug disabled");
                     Settings.setDebug(false);
-                } else
-                {
+                } else {
                     Settings.setDebug(true);
                     uiToast("Debug enabled");
                 }
                 break;
             }
-            case R.id.menu_log:
-            {
+            case R.id.menu_log: {
                 Intent i = new Intent(BolydeActivity.this, LogActivity.class);
                 startActivity(i);
                 break;
             }
-            case R.id.menu_settings:
-            {
+            case R.id.menu_settings: {
                 Intent i = new Intent(BolydeActivity.this, SettingsActivity.class);
                 startActivity(i);
                 break;
             }
-            case R.id.menu_support:
-            {
+            case R.id.menu_about: {
                 Intent i = new Intent(BolydeActivity.this, AboutActivity.class);
+                Bundle b = new Bundle();
+                b.putString("flavor", "interoberlin");
+                i.putExtras(b);
                 startActivity(i);
                 break;
             }
-            default:
-            {
+            default: {
                 return super.onOptionsItemSelected(item);
             }
-	    }
+        }
 
-	return true;
+        return true;
     }
 
-    public static void draw()
-    {
-	activity.setTitle("Bolyde");
+    public static void draw() {
+        activity.setTitle("Bolyde");
 
-	if (lnr != null)
-	{
-		lnr.removeAllViews();
+        if (lnr != null) {
+            lnr.removeAllViews();
 
-		// Add debug lines
-		dlOffset = new DebugLine(activity, "Offset", String.valueOf(controller.getOffsetX()), String.valueOf(controller.getOffsetY()));
-		dlData = new DebugLine(activity, "Data", String.valueOf(Simulation.getDataX()), String.valueOf(Simulation.getDataY()));
-		dlRaw = new DebugLine(activity, "Raw", String.valueOf(Simulation.getRawX()), String.valueOf(Simulation.getRawY()));
-		dlValues = new DebugLine(activity, "Values", String.valueOf(Simulation.getX()), String.valueOf(Simulation.getY()));
+            // Add debug lines
+            dlOffset = new DebugLine(activity, "Offset", String.valueOf(controller.getOffsetX()), String.valueOf(controller.getOffsetY()));
+            dlData = new DebugLine(activity, "Data", String.valueOf(Simulation.getDataX()), String.valueOf(Simulation.getDataY()));
+            dlRaw = new DebugLine(activity, "Raw", String.valueOf(Simulation.getRawX()), String.valueOf(Simulation.getRawY()));
+            dlValues = new DebugLine(activity, "Values", String.valueOf(Simulation.getX()), String.valueOf(Simulation.getY()));
 
-		lnr.setOrientation(LinearLayout.VERTICAL);
-		lnr.addView(dlOffset, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		lnr.addView(dlData, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		lnr.addView(dlRaw, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		lnr.addView(dlValues, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	}
+            lnr.setOrientation(LinearLayout.VERTICAL);
+            lnr.addView(dlOffset, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            lnr.addView(dlData, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            lnr.addView(dlRaw, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            lnr.addView(dlValues, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        }
     }
 
-    public SensorManager getSensorManager()
-    {
-	return mSensorManager;
+    public SensorManager getSensorManager() {
+        return mSensorManager;
     }
 
-    public Display getDisplay()
-    {
-	return mDisplay;
+    public Display getDisplay() {
+        return mDisplay;
     }
 
-    public static void uiToast(final String message)
-    {
-	if (Settings.isDebug())
-	{
-	    activity.runOnUiThread(new Runnable()
-	    {
-		@Override
-		public void run()
-		{
-		    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-		}
-	    });
-	}
+    public static void uiToast(final String message) {
+        if (Settings.isDebug()) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
-    public static void uiDraw()
-    {
-	activity.runOnUiThread(new Runnable()
-	{
-	    @Override
-	    public void run()
-	    {
-		draw();
-	    }
-	});
+    public static void uiDraw() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                draw();
+            }
+        });
     }
 }

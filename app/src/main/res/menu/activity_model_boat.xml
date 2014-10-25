@@ -18,10 +18,10 @@
         android:title="@string/menu_log">
     </item>
     <item
-        android:id="@+id/menu_support"
+        android:id="@+id/menu_about"
         android:orderInCategory="500"
         android:showAsAction="never"
-        android:title="@string/menu_support">
+        android:title="@string/about">
     </item>
 
 </menu>
