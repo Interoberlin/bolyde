@@ -73,6 +73,9 @@ public class Simulation implements Observer
 	BroadcastThread.getInstance().start();
     }
 
+    /**
+     * Stops the simulation
+     */
     public void stop()
     {
 	Log.info("Simulation stopped");
