@@ -197,18 +197,10 @@ android.applicationVariants.all { variant ->
 
     // Tidy javadoc dir
     task "tidyJavadoc${variant.name}"(type: Delete) {
-        if (hasProperty("javadoc")) {
-            println "yes"
-        } else {
-            println "no"
-            //'Please specify your javadoc output dir using -Pjavadoc="/my/javadoc/dir"';
-        }
-
         delete new File(javadoc + '/' + groupId + '/' + artifactId);
     }
 
     task "publishJavadoc${variant.name}"(type: Javadoc, dependsOn: "tidyJavadoc${variant.name}") {
-
         title = artifactId.capitalize()
         description = ''
         source = variant.javaCompile.source
