@@ -62,7 +62,6 @@ if (System.getenv("GIT_COMMIT") != null)
 
 def apkName = 'app-release'
 def apkTargetName = artifactId + '-' + versionMajor + '.' + versionMinor + '.' + versionPatch
-def description = "git log --format=%B -n 1".execute().text.trim()
 
 task copyPropertiesDebug(type: Copy) {
     from '../gradle.properties'
@@ -79,6 +78,7 @@ task copyPropertiesRelease(type: Copy) {
 // --------------------
 
 ext.fdroidDir = project.hasProperty('fdroid') ? project.getProperty('fdroid') : null
+ext.fdroidMessage = project.hasProperty('message') ? project.getProperty('message') : "git log --format=%B -n 1".execute().text.trim()
 
 def fdroidRepos = ["Dev", "Release"];
 
@@ -154,7 +154,7 @@ fdroidRepos.each { r ->
             manifestText = manifestFile.getText()
             def matcherDescription = patternDescription.matcher(manifestText)
             matcherDescription.find()
-            manifestContent = matcherDescription.replaceAll('Description:\n* \'\'\'' + versionMajor + '.' + versionMinor + '.' + System.getenv("BUILD_NUMBER") + '\'\'\' ' + description)
+            manifestContent = matcherDescription.replaceAll('Description:\n* \'\'\'' + versionMajor + '.' + versionMinor + '.' + System.getenv("BUILD_NUMBER") + '\'\'\' ' + message)
             manifestFile.write(manifestContent)
 
             def patternCurrentVersion = Pattern.compile("Current Version:.*")

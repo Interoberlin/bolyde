@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mate-0.2.14">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/de.interoberlin/mate/0.2.14/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/de.interoberlin/mate/0.2.14/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
