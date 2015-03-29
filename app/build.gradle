@@ -154,7 +154,7 @@ fdroidRepos.each { r ->
             manifestText = manifestFile.getText()
             def matcherDescription = patternDescription.matcher(manifestText)
             matcherDescription.find()
-            manifestContent = matcherDescription.replaceAll('Description:\n* \'\'\'' + versionMajor + '.' + versionMinor + '.' + System.getenv("BUILD_NUMBER") + '\'\'\' ' + message)
+            manifestContent = matcherDescription.replaceAll('Description:\n* \'\'\'' + versionMajor + '.' + versionMinor + '.' + System.getenv("BUILD_NUMBER") + '\'\'\' ' + fdroidMessage)
             manifestFile.write(manifestContent)
 
             def patternCurrentVersion = Pattern.compile("Current Version:.*")

@@ -18,10 +18,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="249f4752-0ec3-458f-84b7-4d72ca4cc78f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bolyde.iml" afterPath="$PROJECT_DIR$/bolyde.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="bolyde.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,8 +44,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45148516" vertical-offset="3563" max-vertical-offset="4284">
-              <caret line="223" column="23" selection-start-line="223" selection-start-column="23" selection-end-line="223" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.5028791" vertical-offset="2390" max-vertical-offset="4284">
+              <caret line="156" column="186" selection-start-line="156" selection-start-column="186" selection-end-line="156" selection-end-column="186" />
               <folding />
             </state>
           </provider>
@@ -1017,9 +1014,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="282" />
-    <option name="width" value="1084" />
-    <option name="height" value="728" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -1303,7 +1301,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="282" y="0" width="1084" height="728" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1743,8 +1741,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45148516" vertical-offset="3563" max-vertical-offset="4284">
-          <caret line="223" column="23" selection-start-line="223" selection-start-column="23" selection-end-line="223" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.5028791" vertical-offset="2390" max-vertical-offset="4284">
+          <caret line="156" column="186" selection-start-line="156" selection-start-column="186" selection-end-line="156" selection-end-column="186" />
           <folding />
         </state>
       </provider>
